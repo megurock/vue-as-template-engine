@@ -1,4 +1,14 @@
 extend ./_layout.pug
 
 block contents
-  hello-world(msg="Hello, Vue!")
+  h1 Static Html Coding with Vue Components
+
+  section
+    h2 v-for でループ
+    hello-world(msg="Hello, Vue!" v-for="n in 2")
+
+  section 
+    h2 Pug の while 構文でループ
+    - var count = 0
+      while ++count <= 2
+        hello-world(msg="Hello, Pug!!")

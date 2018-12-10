@@ -1,27 +1,23 @@
 const fs = require('fs')
 const path = require('path')
 const mkdirp = require('mkdirp')
+const glob = require('glob')
 const Prerenderer = require('@prerenderer/prerenderer')
 const PuppeteerRenderer = require('@prerenderer/renderer-puppeteer')
+//
 const src = 'dist'
 const dist = 'prerendered'
+const includes = `./${src}/**/*.html`
+const excludes = [] // Specify files to ignore
 
 /**
- * Parse directory and return list of html files
+ *
  */
 function createHtmlFileList(dir, fileList = []) {
-  fs.readdirSync(dir).forEach((fileName) => {
-    const fullPath = path.join(dir, fileName)
-    const stats = fs.statSync(fullPath)
-    if (stats.isFile() && (/\.html/).test(fileName)) {
-      fileList.push(fullPath)
-    } else if (stats.isDirectory()) {
-      return createHtmlFileList(fullPath, fileList)
-    }
-  })
-  return fileList.map((filePath) => {
-    const relativePath = path.relative(src, filePath)
-    return '/' + relativePath.split(path.sep).join('/')
+  return glob.sync(includes, {
+    'ignore': excludes,
+  }).map((str) => {
+    return str.replace(new RegExp(`\\./${src}`), '')
   })
 }
 
@@ -57,7 +53,7 @@ async function main() {
       
       console.log(`Prerender ${outputFile}`)
       mkdirp.sync(outputDir)
-      fs.writeFileSync(outputFile, postProcessHtml(html))
+      fs.writeFileSync(outputFile, html)
     } catch(error) {
       console.log(error)
     }

@@ -1,4 +1,4 @@
-# Statit HTML Coding with Vue Component
+# Vue.js as Template Engine
 
 ## Required
 
@@ -11,14 +11,6 @@
 
 ```shell
 $ yarn build
-```
-
-## Dev
-
-`.vue`、`.pug` ファイルの変更を監視し、コンパイルします。
-
-```
-$ yarn dev
 ```
 
 ## Prerender
